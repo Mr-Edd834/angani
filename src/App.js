@@ -22,6 +22,7 @@ const WeatherApp = () => {
 
   const [showActivity, setShowActivity] = useState(null);
   const [showClothing, setShowClothing] = useState(null);
+  const [showStars, setShowStars] = useState(true);
 
   // Update time every second
   useEffect(() => {
@@ -101,7 +102,7 @@ const WeatherApp = () => {
       {weatherData.current.timeOfDay === 'night' && (
         <>
           <Moon />
-          {[...Array(20)].map((_, i) => (
+          {showStars && [...Array(20)].map((_, i) => (
             <Star key={i} style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 50}%`,
@@ -128,6 +129,13 @@ const WeatherApp = () => {
       <Clock>
         {weatherData.current.time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
       </Clock>
+
+      {/* Controls */}
+      <TopControls>
+        <ToggleButton onClick={() => setShowStars(prev => !prev)}>
+          Stars: {showStars ? 'On' : 'Off'}
+        </ToggleButton>
+      </TopControls>
 
       {/* Main content */}
       <WeatherContent>
@@ -313,6 +321,30 @@ const SuggestionBox = styled.div`
   border-radius: 8px;
   font-size: 0.8rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
+const TopControls = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 20;
+`;
+
+const ToggleButton = styled.button`
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
 `;
 
 const WeatherIcon = styled.div`
